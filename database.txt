@@ -1,0 +1,4 @@
+SELECT * FROM public."Medals";
+
+DELETE FROM public."Medals"
+Where "Rank">0;

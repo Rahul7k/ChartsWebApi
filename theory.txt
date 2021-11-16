@@ -1,0 +1,24 @@
+
+JavaScript Object Notation (JSON):
+    It is a standard text-based format for representing structured data based on JavaScript object syntax.
+    It is commonly used for transmitting data in web applications.
+
+Entity:
+    It is a placeholder for something that you refer to.
+
+DbContext:
+    It is a bridge between your domain or entity classes and the database.
+    It is responsible for interacting with the database.
+        ->(https://www.entityframeworktutorial.net/entityframework6/dbcontext.aspx)
+
+DbContextOptions:
+    The DbContextOptions instance carries configuration information such as the database providers to use,
+    connection strings and any database related configuration information.
+
+DbSet<>:
+    The DbSet class represents an entity set that can be used for create, read, update, and delete operations.
+
+--> If primary key is not present in the database table then we will use .HasNoKey in map.
+
+--> If there is generic repository
+    services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

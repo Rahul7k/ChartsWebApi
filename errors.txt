@@ -1,0 +1,77 @@
+Error1:
+PS E:\TaazaaPractice\AssignmentDemo\DataImport.API> dotnet ef database update
+Build started...
+Build succeeded.
+fail: Microsoft.EntityFrameworkCore.Database.Command[20102]
+      Failed executing DbCommand (32,335ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE DATABASE "DataImportDB";
+Failed executing DbCommand (32,335ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+CREATE DATABASE "DataImportDB";
+Npgsql.NpgsqlException (0x80004005): Exception while reading from stream
+ ---> System.TimeoutException: Timeout during reading attempt
+
+ Solution1:
+ Added Timeout in connection string in appsetting.json
+    "ConnectionStrings": {
+        "PostgreSqlConnectionString": "Host=localhost;Port=5432;User ID=postgres;Password=postgres;Database=DataImportDB;Timeout=300;Pooling=true;"
+    }
+
+
+------------------------------------------------------------------------------------------------------------
+
+
+Error2: (While Debugging) - (EPPlus Licence Error)
+    https://epplussoftware.com/developers/licenseexception
+
+This exception is only thrown when a debugger is attached, so you don't have to configure this in a production/release environment.
+--------------------------------------------------------------------------------------------------------------
+
+
+Error 3: (https://stackoverflow.com/questions/56833328/how-to-store-list-object-in-session-variable-using-asp-net-core-and-how-to-fetc/56833567)
+
+When I was trying to use data from one endpoint to another endpoint, i tried to store it directly into a global variable, but it was not possible as the data was being removed from the variable and we were not be able to use that data into another endpoint.
+
+So we had to add to add HttpContext.Session to extend the time upto which data will be stored
+
+In Startup file:
+    In ConfigureServices add:
+        services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+    In Configure add:
+        app.UseSession();
+        (below app.UseSwagger();)
+
+    Then in controller make a extension method to store data in list (we can store data in string and int without this extension method but to store complex data we have to add extension method class):
+
+        public static class SessionExtensions
+        {
+            public static T GetComplexData<T>(this ISession session, string key)
+            {
+                var data = session.GetString(key);
+                if (data == null)
+                {
+                    return default(T);
+                }
+                return JsonConvert.DeserializeObject<T>(data);
+            }
+            public static void SetComplexData(this ISession session, string key, object value)
+            {
+                session.SetString(key, JsonConvert.SerializeObject(value));
+            }
+        }
+
+        Package to install: dotnet add package Newtonsoft.Json
+
+    And then use:
+        HttpContext.Session.SetComplexData("records", _listOfRecords);    //in _listOfRecords we have data
+    in the endpoint whose data we want to use in another endpoint.
+        
+        HttpContext.Session.GetComplexData<List<Medals>>("records")
+    in the endpoint where we are using the data.
+        
+
+------------------------------------------------------------------------------

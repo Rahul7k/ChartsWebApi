@@ -1,0 +1,70 @@
+Package1:
+dotnet add package EPPlus
+    --->we can import and export the data from excel file with the help of this nudget.
+
+
+At first we import excel data in the list format and then we will insert that list in the database.
+
+
+Package2:
+    dotnet add package Microsoft.EntityFrameworkCore --version 5.0.10
+    dotnet add package Microsoft.EntityFrameworkCore.Design --version 5.0.10
+
+Package3:
+    dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL --version 5.0.10
+        -->for using PostgreSQL
+
+Command4:
+    dotnet tool install --global dotnet-ef
+    dotnet ef migrations add phase/migrationName
+    dotnet ef database update
+
+-------
+Adding Data to Cache Memory:
+(https://stackoverflow.com/questions/56833328/how-to-store-list-object-in-session-variable-using-asp-net-core-and-how-to-fetc/56833567)
+
+When I was trying to use data from one endpoint to another endpoint, i tried to store it directly into a global variable, but it was not possible as the data was being removed from the variable and we were not be able to use that data into another endpoint.
+
+So we had to add to add HttpContext.Session to extend the time upto which data will be stored
+
+In Startup file:
+    In ConfigureServices add:
+        services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+    In Configure add:
+        app.UseSession();
+        (below app.UseSwagger();)
+
+    Then in controller make a extension method to store data in list (we can store data in string and int without this extension method but to store complex data we have to add extension method class):
+
+        public static class SessionExtensions
+        {
+            public static T GetComplexData<T>(this ISession session, string key)
+            {
+                var data = session.GetString(key);
+                if (data == null)
+                {
+                    return default(T);
+                }
+                return JsonConvert.DeserializeObject<T>(data);
+            }
+            public static void SetComplexData(this ISession session, string key, object value)
+            {
+                session.SetString(key, JsonConvert.SerializeObject(value));
+            }
+        }
+
+        Package to install: dotnet add package Newtonsoft.Json
+
+    And then use:
+        HttpContext.Session.SetComplexData("records", _listOfRecords);    //in _listOfRecords we have data
+    in the endpoint whose data we want to use in another endpoint.
+        
+        HttpContext.Session.GetComplexData<List<Medals>>("records")
+    in the endpoint where we are using the data.
+
+----------------
