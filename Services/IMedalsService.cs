@@ -9,8 +9,8 @@ namespace charts.web.api.Services
 {
     public interface IMedalsService
     {
-        public List<Medals> ImportMedalsData(IFormFile excelFile);
-        void AddMedalsData(List<Medals> listOfMedals);
+        public List<Medals> ImportMedalsData();
+        //void AddMedalsData();
         IEnumerable<Medals> GetMedalsData();
     }
 }

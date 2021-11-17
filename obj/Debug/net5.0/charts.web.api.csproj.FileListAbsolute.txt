@@ -39,3 +39,7 @@ E:\TaazaaAssignment\charts.web.api\obj\Debug\net5.0\charts.web.api.dll
 E:\TaazaaAssignment\charts.web.api\obj\Debug\net5.0\ref\charts.web.api.dll
 E:\TaazaaAssignment\charts.web.api\obj\Debug\net5.0\charts.web.api.pdb
 E:\TaazaaAssignment\charts.web.api\obj\Debug\net5.0\charts.web.api.genruntimeconfig.cache
+E:\TaazaaAssignment\charts.web.api\bin\Debug\net5.0\ClosedXML.dll
+E:\TaazaaAssignment\charts.web.api\bin\Debug\net5.0\DocumentFormat.OpenXml.dll
+E:\TaazaaAssignment\charts.web.api\bin\Debug\net5.0\ExcelNumberFormat.dll
+E:\TaazaaAssignment\charts.web.api\bin\Debug\net5.0\System.IO.Packaging.dll
