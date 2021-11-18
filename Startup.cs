@@ -35,12 +35,12 @@ namespace charts.web.api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDistributedMemoryCache();
-            services.AddSession(options =>
+            /* services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
-            });
+            }); */
 
             services.AddCors(c =>  
             {  
@@ -50,6 +50,10 @@ namespace charts.web.api
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient<IMedalsService, MedalsService>();
+            services.AddTransient<IAthletesService, AthletesService>();
+            services.AddTransient<ICoachesService, CoachesService>();
+            services.AddTransient<IEntriesGenderService, EntriesGenderService>();
+            services.AddTransient<ITeamsService,TeamsService>();
             services.AddDbContext<ChartsDbContext>(e => e.UseNpgsql(Configuration.GetConnectionString("PostgreSqlConnectionString")) );
             services.AddDistributedMemoryCache();
 
@@ -73,7 +77,7 @@ namespace charts.web.api
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSession();
+                //app.UseSession();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "charts.web.api v1"));
             }
 

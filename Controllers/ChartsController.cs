@@ -37,15 +37,23 @@ namespace charts.web.api.Controllers
     public class ChartsController : ControllerBase
     {
         IMedalsService _medalsService;
+        ITeamsService _teamsService;
+        IAthletesService _athletesService;
+        ICoachesService _coachesService;
+        IEntriesGenderService _entriesGenderService;
         private IHostEnvironment _hostEnvironment;
 
-        public ChartsController(IMedalsService medalsService, IHostEnvironment hostEnvironment)
+        public ChartsController(IMedalsService medalsService, ITeamsService teamsService, IAthletesService athletesService, ICoachesService coachesService, IEntriesGenderService entriesGenderService, IHostEnvironment hostEnvironment)
         {
+            _athletesService = athletesService;
+            _coachesService = coachesService;
+            _entriesGenderService = entriesGenderService;
             _medalsService = medalsService;
+            _teamsService = teamsService;
             _hostEnvironment = hostEnvironment;
         }
 
-
+        
         [HttpPost("uploadFiles"), DisableRequestSizeLimit]
         public IActionResult Upload()
         {
@@ -92,16 +100,62 @@ namespace charts.web.api.Controllers
             return Ok(listOfMedals);
         }
 
-        /* [HttpPost("addMedalsRecord")]
-        public void AddMedalsRecord()
-        {
-            _medalsService.AddMedalsData();
-        } */
-
         [HttpGet("getMedalsRecord")]
         public IEnumerable<Medals> GetMedalsRecord()
         {
             return _medalsService.GetMedalsData();
+        }
+
+        [HttpPost("insertAthletesToDb")]
+        public IActionResult ImportAthletesFile()
+        {
+            List<Athletes> listOfAthletes = _athletesService.ImportAthletesData();
+            return Ok(listOfAthletes);
+        }
+
+        [HttpGet("getAthletesRecord")]
+        public IEnumerable<Athletes> GetAthletesRecord()
+        {
+            return _athletesService.GetAthletesData();
+        }
+
+        [HttpPost("insertCoachesToDb")]
+        public IActionResult ImportCoachesFile()
+        {
+            List<Coaches> listOfCoaches = _coachesService.ImportCoachesData();
+            return Ok(listOfCoaches);
+        }
+
+        [HttpGet("getCoachesRecord")]
+        public IEnumerable<Coaches> GetCoachesRecord()
+        {
+            return _coachesService.GetCoachesData();
+        }
+
+        [HttpPost("insertEntriesGenderToDb")]
+        public IActionResult ImportEntriesGenderFile()
+        {
+            List<EntriesGender> listOfEntriesGender = _entriesGenderService.ImportEntriesGenderData();
+            return Ok(listOfEntriesGender);
+        }
+
+        [HttpGet("getEntriesGenderRecord")]
+        public IEnumerable<EntriesGender> GetEntriesGenderRecord()
+        {
+            return _entriesGenderService.GetEntriesGenderData();
+        }
+
+        [HttpPost("insertTeamsToDb")]
+        public IActionResult ImportTeamsFile()
+        {
+            List<Teams> listOfTeams = _teamsService.ImportTeamsData();
+            return Ok(listOfTeams);
+        }
+
+        [HttpGet("getTeamsRecord")]
+        public IEnumerable<Teams> GetTeamsRecord()
+        {
+            return _teamsService.GetTeamsData();
         }
     }
 }
