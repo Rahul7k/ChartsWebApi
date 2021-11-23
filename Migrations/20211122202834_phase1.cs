@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace charts.web.api.Migrations
 {
@@ -10,18 +11,23 @@ namespace charts.web.api.Migrations
                 name: "Athletes",
                 columns: table => new
                 {
+                    SNo = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     Nation = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     Discipline = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_Athletes", x => x.SNo);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Coaches",
                 columns: table => new
                 {
+                    SNo = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     Nation = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     Discipline = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
@@ -29,6 +35,7 @@ namespace charts.web.api.Migrations
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_Coaches", x => x.SNo);
                 });
 
             migrationBuilder.CreateTable(
@@ -42,6 +49,7 @@ namespace charts.web.api.Migrations
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_EntriesGender", x => x.Discipline);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,6 +73,8 @@ namespace charts.web.api.Migrations
                 name: "Teams",
                 columns: table => new
                 {
+                    SNo = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     Discipline = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     Nation = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
@@ -72,6 +82,7 @@ namespace charts.web.api.Migrations
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_Teams", x => x.SNo);
                 });
         }
 

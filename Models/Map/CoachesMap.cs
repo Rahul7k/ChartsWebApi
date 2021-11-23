@@ -10,9 +10,9 @@ namespace charts.web.api.Models.Map
     {
        public CoachesMap(EntityTypeBuilder<Coaches> typeBuilder)
         {
-            typeBuilder.HasNoKey();
-            typeBuilder.Property(x=>x.Name).IsRequired().HasMaxLength(30);
-            typeBuilder.Property(x=>x.Nation).IsRequired().HasMaxLength(30);
+            typeBuilder.HasKey(x=>x.SNo);
+            typeBuilder.Property(x=>x.Name).IsRequired();
+            typeBuilder.Property(x=>x.Nation).IsRequired();
             typeBuilder.Property(x=>x.Discipline).IsRequired().HasMaxLength(30);
             typeBuilder.Property(x=>x.Event).HasMaxLength(30);
         } 

@@ -54,6 +54,7 @@ namespace charts.web.api
             services.AddTransient<ICoachesService, CoachesService>();
             services.AddTransient<IEntriesGenderService, EntriesGenderService>();
             services.AddTransient<ITeamsService,TeamsService>();
+            services.AddTransient<IBaseService, BaseService>();
             services.AddDbContext<ChartsDbContext>(e => e.UseNpgsql(Configuration.GetConnectionString("PostgreSqlConnectionString")) );
             services.AddDistributedMemoryCache();
 

@@ -46,9 +46,10 @@ namespace charts.web.api.Services
             return listOfMedals;
         }  */
 
-        List<Medals> IMedalsService.ImportMedalsData()
+        List<Medals> IMedalsService.ImportMedalsData(string fileName)
         {
-            string path = "./assets/excelFiles/Medals.xlsx";
+            string path = "./assets/excelFiles/"+fileName;
+            //string path = _medalsRepo.GetFilePath();
             using (var stream = System.IO.File.OpenRead(path))
             {
                 FormFile excelFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
@@ -79,6 +80,7 @@ namespace charts.web.api.Services
                 _listOfMedals = listOfMedals;
             }
             _medalsRepo.AddData(_listOfMedals);
+            _medalsRepo.DeleteFile(path);
             return _listOfMedals;
             
         }

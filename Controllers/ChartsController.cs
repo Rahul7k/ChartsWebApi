@@ -41,15 +41,17 @@ namespace charts.web.api.Controllers
         IAthletesService _athletesService;
         ICoachesService _coachesService;
         IEntriesGenderService _entriesGenderService;
+        IBaseService _baseService;
         private IHostEnvironment _hostEnvironment;
 
-        public ChartsController(IMedalsService medalsService, ITeamsService teamsService, IAthletesService athletesService, ICoachesService coachesService, IEntriesGenderService entriesGenderService, IHostEnvironment hostEnvironment)
+        public ChartsController(IMedalsService medalsService, ITeamsService teamsService, IAthletesService athletesService, ICoachesService coachesService, IEntriesGenderService entriesGenderService, IBaseService baseService, IHostEnvironment hostEnvironment)
         {
             _athletesService = athletesService;
             _coachesService = coachesService;
             _entriesGenderService = entriesGenderService;
             _medalsService = medalsService;
             _teamsService = teamsService;
+            _baseService = baseService;
             _hostEnvironment = hostEnvironment;
         }
 
@@ -93,11 +95,11 @@ namespace charts.web.api.Controllers
 
 
         [HttpPost("insertMedalsToDb")]
-        public IActionResult ImportMedalsFile()
+        public List<Medals> ImportMedalsFile([FromBody] ApiModel fileName)
         {
-            List<Medals> listOfMedals = _medalsService.ImportMedalsData();
+            List<Medals> listOfMedals = _medalsService.ImportMedalsData(string.Format("{0}", fileName.apiData));
             //HttpContext.Session.SetComplexData("medalsRecord", listOfMedals);
-            return Ok(listOfMedals);
+            return listOfMedals;
         }
 
         [HttpGet("getMedalsRecord")]
@@ -107,9 +109,9 @@ namespace charts.web.api.Controllers
         }
 
         [HttpPost("insertAthletesToDb")]
-        public IActionResult ImportAthletesFile()
+        public IActionResult ImportAthletesFile([FromBody] ApiModel fileName)
         {
-            List<Athletes> listOfAthletes = _athletesService.ImportAthletesData();
+            List<Athletes> listOfAthletes = _athletesService.ImportAthletesData(string.Format("{0}", fileName.apiData));
             return Ok(listOfAthletes);
         }
 
@@ -120,9 +122,9 @@ namespace charts.web.api.Controllers
         }
 
         [HttpPost("insertCoachesToDb")]
-        public IActionResult ImportCoachesFile()
+        public IActionResult ImportCoachesFile([FromBody] ApiModel fileName)
         {
-            List<Coaches> listOfCoaches = _coachesService.ImportCoachesData();
+            List<Coaches> listOfCoaches = _coachesService.ImportCoachesData(string.Format("{0}", fileName.apiData));
             return Ok(listOfCoaches);
         }
 
@@ -133,9 +135,9 @@ namespace charts.web.api.Controllers
         }
 
         [HttpPost("insertEntriesGenderToDb")]
-        public IActionResult ImportEntriesGenderFile()
+        public IActionResult ImportEntriesGenderFile([FromBody] ApiModel fileName)
         {
-            List<EntriesGender> listOfEntriesGender = _entriesGenderService.ImportEntriesGenderData();
+            List<EntriesGender> listOfEntriesGender = _entriesGenderService.ImportEntriesGenderData(string.Format("{0}", fileName.apiData));
             return Ok(listOfEntriesGender);
         }
 
@@ -146,9 +148,9 @@ namespace charts.web.api.Controllers
         }
 
         [HttpPost("insertTeamsToDb")]
-        public IActionResult ImportTeamsFile()
+        public IActionResult ImportTeamsFile([FromBody] ApiModel fileName)
         {
-            List<Teams> listOfTeams = _teamsService.ImportTeamsData();
+            List<Teams> listOfTeams = _teamsService.ImportTeamsData(string.Format("{0}", fileName.apiData));
             return Ok(listOfTeams);
         }
 
@@ -156,6 +158,12 @@ namespace charts.web.api.Controllers
         public IEnumerable<Teams> GetTeamsRecord()
         {
             return _teamsService.GetTeamsData();
+        }
+        
+        [HttpGet("getFiles")]
+        public IActionResult GetAllFiles()
+        {
+            return Ok(_baseService.AvailableFiles());
         }
     }
 }

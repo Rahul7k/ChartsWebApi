@@ -19,9 +19,9 @@ namespace charts.web.api.Services
             _entriesGenderRepo = entriesGenderRepo;
         }
 
-        List<EntriesGender> IEntriesGenderService.ImportEntriesGenderData()
+        List<EntriesGender> IEntriesGenderService.ImportEntriesGenderData(string fileName)
         {
-            string path = "./assets/excelFiles/EntriesGender.xlsx";
+            string path = "./assets/excelFiles/"+fileName;
             using (var stream = System.IO.File.OpenRead(path))
             {
                 FormFile excelFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
@@ -49,6 +49,7 @@ namespace charts.web.api.Services
                 _listOfEntriesGender = listOfEntriesGender;
             }
             _entriesGenderRepo.AddData(_listOfEntriesGender);
+            _entriesGenderRepo.DeleteFile(path);
             return _listOfEntriesGender;
             
         }

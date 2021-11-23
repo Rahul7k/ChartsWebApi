@@ -19,9 +19,9 @@ namespace charts.web.api.Services
             _teamsRepo = teamsRepo;
         }
 
-        List<Teams> ITeamsService.ImportTeamsData()
+        List<Teams> ITeamsService.ImportTeamsData(string fileName)
         {
-            string path = "./assets/excelFiles/Teams.xlsx";
+            string path = "./assets/excelFiles/"+fileName;
             using (var stream = System.IO.File.OpenRead(path))
             {
                 FormFile excelFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
@@ -41,7 +41,8 @@ namespace charts.web.api.Services
                                 Name = worksheet.Cells[row, 1].Value.ToString().Trim(),
                                 Discipline = worksheet.Cells[row, 2].Value.ToString().Trim(),
                                 Nation = worksheet.Cells[row, 3].Value.ToString().Trim(),
-                                Event = worksheet.Cells[row, 4].Value.ToString().Trim()
+                                Event = worksheet.Cells[row, 4].Value.ToString().Trim(),
+                                SNo = Convert.ToInt32(worksheet.Cells[row, 5].Value.ToString().Trim())
                             });
                         }
                     }
@@ -49,6 +50,7 @@ namespace charts.web.api.Services
                 _listOfTeams = listOfTeams;
             }
             _teamsRepo.AddData(_listOfTeams);
+            _teamsRepo.DeleteFile(path);
             return _listOfTeams;
             
         }

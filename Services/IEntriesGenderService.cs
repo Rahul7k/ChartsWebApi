@@ -8,7 +8,7 @@ namespace charts.web.api.Services
 {
     public interface IEntriesGenderService
     {
-        public List<EntriesGender> ImportEntriesGenderData();
+        public List<EntriesGender> ImportEntriesGenderData(string fileName);
         IEnumerable<EntriesGender> GetEntriesGenderData();
     }
 }

@@ -8,7 +8,7 @@ namespace charts.web.api.Services
 {
     public interface ITeamsService
     {
-        public List<Teams> ImportTeamsData();
+        public List<Teams> ImportTeamsData(string fileName);
         IEnumerable<Teams> GetTeamsData(); 
     }
 }

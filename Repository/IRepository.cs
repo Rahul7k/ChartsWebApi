@@ -10,5 +10,7 @@ namespace charts.web.api.Repository
         //void DeleteData();
         void AddData(List<T> dataFromExcel);
         IEnumerable<T> GetAllData();
+
+        void DeleteFile(string filePath);
     }
 }

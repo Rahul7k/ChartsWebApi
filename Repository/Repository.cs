@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +50,11 @@ namespace charts.web.api.Repository
         IEnumerable<T> IRepository<T>.GetAllData()
         {
             return _dataToTable.ToList<T>();
+        }
+
+        void IRepository<T>.DeleteFile(string filePath)
+        {
+            File.Delete(filePath);
         }
     }
 }

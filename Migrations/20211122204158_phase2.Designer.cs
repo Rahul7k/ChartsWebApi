@@ -9,8 +9,8 @@ using charts.web.api.Repository;
 namespace charts.web.api.Migrations
 {
     [DbContext(typeof(ChartsDbContext))]
-    [Migration("20211114190527_phase1")]
-    partial class phase1
+    [Migration("20211122204158_phase2")]
+    partial class phase2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,6 +22,11 @@ namespace charts.web.api.Migrations
 
             modelBuilder.Entity("charts.web.api.Models.Athletes", b =>
                 {
+                    b.Property<int>("SNo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
                     b.Property<string>("Discipline")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -29,19 +34,24 @@ namespace charts.web.api.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Nation")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
+
+                    b.HasKey("SNo");
 
                     b.ToTable("Athletes");
                 });
 
             modelBuilder.Entity("charts.web.api.Models.Coaches", b =>
                 {
+                    b.Property<int>("SNo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
                     b.Property<string>("Discipline")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -53,13 +63,13 @@ namespace charts.web.api.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Nation")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
+
+                    b.HasKey("SNo");
 
                     b.ToTable("Coaches");
                 });
@@ -67,7 +77,6 @@ namespace charts.web.api.Migrations
             modelBuilder.Entity("charts.web.api.Models.EntriesGender", b =>
                 {
                     b.Property<string>("Discipline")
-                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
@@ -79,6 +88,8 @@ namespace charts.web.api.Migrations
 
                     b.Property<int>("Total")
                         .HasColumnType("integer");
+
+                    b.HasKey("Discipline");
 
                     b.ToTable("EntriesGender");
                 });
@@ -113,6 +124,11 @@ namespace charts.web.api.Migrations
 
             modelBuilder.Entity("charts.web.api.Models.Teams", b =>
                 {
+                    b.Property<int>("SNo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
                     b.Property<string>("Discipline")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -125,13 +141,13 @@ namespace charts.web.api.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Nation")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("text");
+
+                    b.HasKey("SNo");
 
                     b.ToTable("Teams");
                 });

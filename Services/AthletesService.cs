@@ -20,9 +20,9 @@ namespace charts.web.api.Services
         }
 
 
-        List<Athletes> IAthletesService.ImportAthletesData()
+        List<Athletes> IAthletesService.ImportAthletesData(string fileName)
         {
-            string path = "./assets/excelFiles/Athletes.xlsx";
+            string path = "./assets/excelFiles/"+fileName;
             using (var stream = System.IO.File.OpenRead(path))
             {
                 FormFile excelFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
@@ -41,7 +41,8 @@ namespace charts.web.api.Services
                             {
                                 Name = worksheet.Cells[row, 1].Value.ToString().Trim(),
                                 Nation = worksheet.Cells[row, 2].Value.ToString().Trim(),
-                                Discipline = worksheet.Cells[row, 3].Value.ToString().Trim()
+                                Discipline = worksheet.Cells[row, 3].Value.ToString().Trim(),
+                                SNo = Convert.ToInt32(worksheet.Cells[row, 4].Value.ToString().Trim())
                             });
                         }
                     }
@@ -49,6 +50,7 @@ namespace charts.web.api.Services
                 _listOfAthletes = listOfAthletes;
             }
             _medalsRepo.AddData(_listOfAthletes);
+            _medalsRepo.DeleteFile(path);
             return _listOfAthletes;
             
         }
