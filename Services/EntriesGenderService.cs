@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using charts.web.api.Models;
 using charts.web.api.Repository;
 using Microsoft.AspNetCore.Http;
+using Npgsql;
 using OfficeOpenXml;
 
 namespace charts.web.api.Services
@@ -57,6 +59,39 @@ namespace charts.web.api.Services
         IEnumerable<EntriesGender> IEntriesGenderService.GetEntriesGenderData()
         {
             return _entriesGenderRepo.GetAllData();
+        }
+
+        IEnumerable<EntriesGender> IEntriesGenderService.FilterByGames()
+        {
+            IEnumerable<EntriesGender> topFive = _entriesGenderRepo.GetAllData().OrderByDescending(x=>x.Total).Take(5);
+            return topFive;
+            
+        }
+
+        /* IEnumerable<EntriesGender> IEntriesGenderService.FilterByGamesOthers()
+        {
+            string other = "others";
+            int sumOthers=0;
+            List<int> foundRows = _entriesGenderRepo.GetAllData().Select(x=>x.Total).ToList();
+            for(int i=0; i<foundRows.Count(); i++)
+            {
+                sumOthers = sumOthers + foundRows[i];
+            }
+            string othData = sumOthers.ToString();
+
+            var data = new List<EntriesGender>().Select(x=> new{
+                total = other,
+                game = othData
+            }).AsEnumerable();
+
+
+            return data;
+            
+        } */
+
+        IEnumerable<EntriesGender> IEntriesGenderService.FilterByParticipationMF()
+        {
+            return _entriesGenderRepo.GetAllData().OrderByDescending(x=>x.Total).Take(5);
         }
     }
 }

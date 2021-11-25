@@ -165,5 +165,76 @@ namespace charts.web.api.Controllers
         {
             return Ok(_baseService.AvailableFiles());
         }
+
+        [HttpGet("filterMedalsByTotal")]
+        public IActionResult FilterMedalsByTotal()
+        {
+            var data = _medalsService.FilterByMedals().AsEnumerable().Select(x=>new{
+                total=x.Total,
+                nation=x.Nation
+            });
+            return Ok(data);
+        }
+
+        [HttpGet("filterMedalsByGold")]
+        public IActionResult FilterMedalsByGold()
+        {
+            var data = _medalsService.FilterByGold().AsEnumerable().Select(x=>new{
+                gold=x.Gold,
+                nation=x.Nation
+            });
+            return Ok(data);
+        }
+
+        [HttpGet("filterMedalsBySilver")]
+        public IActionResult FilterMedalsBySilver()
+        {
+            var data = _medalsService.FilterBySilver().AsEnumerable().Select(x=>new{
+                silver=x.Silver,
+                nation=x.Nation
+            });
+            return Ok(data);
+        }
+
+        [HttpGet("filterMedalsByBronze")]
+        public IActionResult FilterMedalsByBronze()
+        {
+            var data = _medalsService.FilterByBronze().AsEnumerable().Select(x=>new{
+                bronze=x.Bronze,
+                nation=x.Nation
+            });
+            return Ok(data);
+        }
+
+        [HttpGet("filterGamesByParticipation")]
+        public IActionResult FilterGamesByParticipation()
+        {
+            var data = _entriesGenderService.FilterByGames().AsEnumerable().Select(x=>new{
+                total= x.Total,
+                game = x.Discipline
+            });
+
+            return Ok(data);
+        }
+
+        [HttpGet("filterGamesByParticipationMF")]
+        public IActionResult FilterGamesByParticipationMF()
+        {
+            var data = _entriesGenderService.FilterByParticipationMF().AsEnumerable().Select(x=>new{
+                total= x.Total,
+                male = x.Male,
+                female = x.Female,
+                game = x.Discipline
+            });
+
+            return Ok(data);
+        }
+
+        [HttpGet("filterAthletesByNation")]
+        public IActionResult FilterAthletesByNation()
+        {
+            return Ok(_athletesService.FilterByNation());
+        }
+
     }
 }

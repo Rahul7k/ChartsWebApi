@@ -12,5 +12,9 @@ namespace charts.web.api.Services
         public List<Medals> ImportMedalsData(string fileName);
         //void AddMedalsData();
         IEnumerable<Medals> GetMedalsData();
+        IEnumerable<Medals> FilterByMedals();
+        IEnumerable<Medals> FilterByGold();
+        IEnumerable<Medals> FilterBySilver();
+        IEnumerable<Medals> FilterByBronze();
     }
 }

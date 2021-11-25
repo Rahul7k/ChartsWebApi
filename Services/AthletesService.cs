@@ -10,7 +10,7 @@ using OfficeOpenXml;
 
 namespace charts.web.api.Services
 {
-    public class AthletesService: IAthletesService
+    public class AthletesService : IAthletesService
     {
         private IRepository<Athletes> _medalsRepo;
         List<Athletes> _listOfAthletes;
@@ -22,7 +22,7 @@ namespace charts.web.api.Services
 
         List<Athletes> IAthletesService.ImportAthletesData(string fileName)
         {
-            string path = "./assets/excelFiles/"+fileName;
+            string path = "./assets/excelFiles/" + fileName;
             using (var stream = System.IO.File.OpenRead(path))
             {
                 FormFile excelFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
@@ -52,13 +52,52 @@ namespace charts.web.api.Services
             _medalsRepo.AddData(_listOfAthletes);
             _medalsRepo.DeleteFile(path);
             return _listOfAthletes;
-            
+
         }
 
 
         IEnumerable<Athletes> IAthletesService.GetAthletesData()
         {
             return _medalsRepo.GetAllData();
+        }
+
+        IEnumerable<AthleteNation> IAthletesService.FilterByNation()
+        {
+            string[] words = _medalsRepo.GetAllData().Select(x => x.Nation).ToArray();
+            int n = words.Length;
+
+            Dictionary<string, int> mp = new Dictionary<string, int>();
+
+            // Traverse through array elements and
+            // count frequencies
+            for (int i = 0; i < n; i++)
+            {
+                if (mp.ContainsKey(words[i]))
+                {
+                    var val = mp[words[i]];
+                    mp.Remove(words[i]);
+                    mp.Add(words[i], val + 1);
+                }
+                else
+                {
+                    mp.Add(words[i], 1);
+                }
+            }
+
+            List<AthleteNation> valNation = new List<AthleteNation>();
+
+            // Traverse through map and print frequencies
+            foreach (KeyValuePair<string, int> entry in mp)
+            {
+                var natValue = new AthleteNation();
+                natValue.Nation = entry.Key;
+                natValue.Count = entry.Value;
+                valNation.Add(natValue);
+                
+            }
+
+            return valNation.OrderByDescending(x=>x.Count).Take(5);
+
         }
     }
 }

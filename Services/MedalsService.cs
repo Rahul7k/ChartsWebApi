@@ -96,5 +96,25 @@ namespace charts.web.api.Services
             return _medalsRepo.GetAllData();
         }
 
+        IEnumerable<Medals> IMedalsService.FilterByMedals()
+        {
+            return _medalsRepo.GetAllData().OrderByDescending(x=>x.Total).Take(5);
+        }
+
+        IEnumerable<Medals> IMedalsService.FilterByGold()
+        {
+            return _medalsRepo.GetAllData().OrderByDescending(x=>x.Gold).Take(5);
+        }
+
+        IEnumerable<Medals> IMedalsService.FilterBySilver()
+        {
+            return _medalsRepo.GetAllData().OrderByDescending(x=>x.Silver).Take(5);
+        }
+
+        IEnumerable<Medals> IMedalsService.FilterByBronze()
+        {
+            return _medalsRepo.GetAllData().OrderByDescending(x=>x.Bronze).Take(5);
+        }
+
     }
 }

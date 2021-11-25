@@ -10,5 +10,9 @@ namespace charts.web.api.Services
     {
         public List<EntriesGender> ImportEntriesGenderData(string fileName);
         IEnumerable<EntriesGender> GetEntriesGenderData();
+        IEnumerable<EntriesGender> FilterByGames();
+
+        IEnumerable<EntriesGender> FilterByParticipationMF();
+        //IEnumerable<EntriesGender> FilterByGamesOthers();
     }
 }

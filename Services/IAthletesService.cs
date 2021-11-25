@@ -10,5 +10,6 @@ namespace charts.web.api.Services
     {
         public List<Athletes> ImportAthletesData(string fileName);
         IEnumerable<Athletes> GetAthletesData();
+        IEnumerable<AthleteNation> FilterByNation();
     }
 }
