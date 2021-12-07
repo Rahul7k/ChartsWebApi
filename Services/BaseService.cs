@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace charts.web.api.Services
 {
@@ -15,14 +13,24 @@ namespace charts.web.api.Services
 
             List<string> availableFiles = new List<string>();
 
-            foreach(string str in listFiles)
+            foreach (string str in listFiles)
             {
                 string fileName = Path.GetFileName(str);
                 availableFiles.Add(fileName);
             }
-            
+
             return availableFiles;
 
+        }
+
+        void IBaseService.DeleteAvailableFiles(string fileName)
+        {
+            string rootFolder = "./assets/excelFiles"; 
+            string fileToDelete = fileName;
+            if(File.Exists(Path.Combine(rootFolder, fileToDelete)))
+            {
+                File.Delete(Path.Combine(rootFolder, fileToDelete));
+            }
         }
 
     }

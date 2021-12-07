@@ -3,34 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using charts.web.api.Models;
 using charts.web.api.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
+
 
 namespace charts.web.api.Controllers
 {
-    //Extending Session Complexiety
-    /* public static class SessionExtensions
-    {
-        public static T GetComplexData<T>(this ISession session, string key)
-        {
-            var data = session.GetString(key);
-            if (data == null)
-            {
-                return default(T);
-            }
-            return JsonConvert.DeserializeObject<T>(data);
-        }
-
-        public static void SetComplexData(this ISession session, string key, object value)
-        {
-            session.SetString(key, JsonConvert.SerializeObject(value));
-        }
-    } */
 
     [ApiController]
     [Route("[controller]")]
@@ -55,7 +35,7 @@ namespace charts.web.api.Controllers
             _hostEnvironment = hostEnvironment;
         }
 
-        
+
         [HttpPost("uploadFiles"), DisableRequestSizeLimit]
         public IActionResult Upload()
         {
@@ -65,7 +45,7 @@ namespace charts.web.api.Controllers
                 string folderName = "assets/excelFiles";
                 string webRootPath = _hostEnvironment.ContentRootPath;
                 string newPath = Path.Combine(webRootPath, folderName);
-                if(!Directory.Exists(newPath))
+                if (!Directory.Exists(newPath))
                 {
                     Directory.CreateDirectory(newPath);
                 }
@@ -91,7 +71,6 @@ namespace charts.web.api.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-
 
 
         [HttpPost("insertMedalsToDb")]
@@ -159,7 +138,7 @@ namespace charts.web.api.Controllers
         {
             return _teamsService.GetTeamsData();
         }
-        
+
         [HttpGet("getFiles")]
         public IActionResult GetAllFiles()
         {
@@ -169,9 +148,10 @@ namespace charts.web.api.Controllers
         [HttpGet("filterMedalsByTotal")]
         public IActionResult FilterMedalsByTotal()
         {
-            var data = _medalsService.FilterByMedals().AsEnumerable().Select(x=>new{
-                total=x.Total,
-                nation=x.Nation
+            var data = _medalsService.FilterByMedals().AsEnumerable().Select(x => new
+            {
+                total = x.Total,
+                nation = x.Nation
             });
             return Ok(data);
         }
@@ -179,9 +159,10 @@ namespace charts.web.api.Controllers
         [HttpGet("filterMedalsByGold")]
         public IActionResult FilterMedalsByGold()
         {
-            var data = _medalsService.FilterByGold().AsEnumerable().Select(x=>new{
-                gold=x.Gold,
-                nation=x.Nation
+            var data = _medalsService.FilterByGold().AsEnumerable().Select(x => new
+            {
+                gold = x.Gold,
+                nation = x.Nation
             });
             return Ok(data);
         }
@@ -189,9 +170,10 @@ namespace charts.web.api.Controllers
         [HttpGet("filterMedalsBySilver")]
         public IActionResult FilterMedalsBySilver()
         {
-            var data = _medalsService.FilterBySilver().AsEnumerable().Select(x=>new{
-                silver=x.Silver,
-                nation=x.Nation
+            var data = _medalsService.FilterBySilver().AsEnumerable().Select(x => new
+            {
+                silver = x.Silver,
+                nation = x.Nation
             });
             return Ok(data);
         }
@@ -199,9 +181,10 @@ namespace charts.web.api.Controllers
         [HttpGet("filterMedalsByBronze")]
         public IActionResult FilterMedalsByBronze()
         {
-            var data = _medalsService.FilterByBronze().AsEnumerable().Select(x=>new{
-                bronze=x.Bronze,
-                nation=x.Nation
+            var data = _medalsService.FilterByBronze().AsEnumerable().Select(x => new
+            {
+                bronze = x.Bronze,
+                nation = x.Nation
             });
             return Ok(data);
         }
@@ -209,8 +192,9 @@ namespace charts.web.api.Controllers
         [HttpGet("filterGamesByParticipation")]
         public IActionResult FilterGamesByParticipation()
         {
-            var data = _entriesGenderService.FilterByGames().AsEnumerable().Select(x=>new{
-                total= x.Total,
+            var data = _entriesGenderService.FilterByGames().AsEnumerable().Select(x => new
+            {
+                total = x.Total,
                 game = x.Discipline
             });
 
@@ -220,8 +204,9 @@ namespace charts.web.api.Controllers
         [HttpGet("filterGamesByParticipationMF")]
         public IActionResult FilterGamesByParticipationMF()
         {
-            var data = _entriesGenderService.FilterByParticipationMF().AsEnumerable().Select(x=>new{
-                total= x.Total,
+            var data = _entriesGenderService.FilterByParticipationMF().AsEnumerable().Select(x => new
+            {
+                total = x.Total,
                 male = x.Male,
                 female = x.Female,
                 game = x.Discipline
@@ -234,6 +219,17 @@ namespace charts.web.api.Controllers
         public IActionResult FilterAthletesByNation()
         {
             return Ok(_athletesService.FilterByNation());
+        }
+
+        [HttpPost("deleteAvailableFiles")]
+        public IActionResult DeleteFiles([FromBody] ApiModel fileName)
+        {
+            if(fileName==null)
+            {
+                return Ok("Please Select a file");
+            }
+            _baseService.DeleteAvailableFiles(fileName.apiData);
+            return Ok(fileName + " Deleted");
         }
 
     }

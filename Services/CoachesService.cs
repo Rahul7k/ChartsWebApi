@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using charts.web.api.Models;
 using charts.web.api.Repository;
 using Microsoft.AspNetCore.Http;
